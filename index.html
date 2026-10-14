@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>nklv.dsgn — under construction</title>
+  <meta name="description" content="nklv.dsgn is being rebuilt and will be live soon. Questions: nikolaev.design1@gmail.com">
+  <meta name="theme-color" content="#0a0a0b">
+  <meta property="og:title" content="nklv.dsgn — under construction">
+  <meta property="og:description" content="The new site will be live soon. Questions: nikolaev.design1@gmail.com">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --background: #0a0a0b;
+      --foreground: #f2f2f3;
+      --quiet: #7c7e84;
+      --ice: #b8d4ff;
+      --line: rgba(242, 242, 243, 0.14);
+      --font-sans: "Space Grotesk", Arial, sans-serif;
+      --font-mono: "Fragment Mono", ui-monospace, Menlo, monospace;
+      --spring: cubic-bezier(0.22, 1.28, 0.36, 1);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: var(--background);
+      color: var(--foreground);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .screen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--background);
+    }
+
+    /* Static dot grid, same as the site preloader */
+    .grid {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(242, 242, 243, 0.42) 0px, rgba(242, 242, 243, 0.12) 1.15px, transparent 2.6px);
+      background-size: 14px 14px;
+      -webkit-mask-image: radial-gradient(ellipse at 50% 46%, #000 16%, transparent 72%);
+      mask-image: radial-gradient(ellipse at 50% 46%, #000 16%, transparent 72%);
+    }
+
+    .field {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    /* Chrome: wordmark, corner counter, footer */
+    .mono {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+
+    .wordmark {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      transition: color 0.2s ease;
+    }
+    .wordmark:hover { color: var(--ice); }
+
+    .corner {
+      position: absolute;
+      top: 25px;
+      right: 20px;
+      color: var(--quiet);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .footer {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      text-transform: uppercase;
+    }
+    .socials a {
+      display: inline-block;
+      transition: color 0.2s ease, transform 0.35s var(--spring);
+    }
+    .socials a:hover { color: var(--ice); transform: translateY(-2px); }
+
+    .copyright { color: var(--quiet); white-space: nowrap; }
+
+    /* Center block */
+    .center {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 0 16px;
+      max-width: 640px;
+      text-align: center;
+    }
+
+    .status {
+      margin: 0;
+      color: var(--ice);
+      font-variant-numeric: tabular-nums;
+      white-space: pre;
+    }
+
+    .headline {
+      margin: 0;
+      font-size: 1.5rem;
+      line-height: 1.333;
+      font-weight: 400;
+      letter-spacing: -0.005em;
+      white-space: pre;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .details {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      margin-top: 4px;
+    }
+
+    .note {
+      margin: 0;
+      max-width: 42ch;
+      color: var(--quiet);
+      font-size: 15px;
+      line-height: 1.5;
+      letter-spacing: 0.005em;
+      text-wrap: balance;
+    }
+
+    .mail {
+      display: inline-flex;
+      align-items: stretch;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(10, 10, 11, 0.72);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      transition: border-color 0.25s ease, transform 0.45s var(--spring);
+    }
+    .mail:hover { border-color: rgba(184, 212, 255, 0.42); transform: translateY(-1px); }
+
+    .mail a,
+    .mail button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      font: inherit;
+      color: var(--foreground);
+      background: none;
+      border: 0;
+      cursor: pointer;
+      transition: color 0.2s ease, background-color 0.2s ease;
+    }
+    .mail a { padding: 0 16px 0 18px; border-radius: 999px 0 0 999px; }
+    .mail a:hover { color: var(--ice); }
+    .mail button {
+      position: relative;
+      min-width: 76px;
+      justify-content: center;
+      padding: 0 16px;
+      border-left: 1px solid var(--line);
+      border-radius: 0 999px 999px 0;
+      color: var(--quiet);
+    }
+    .mail button:hover { color: var(--foreground); background: rgba(242, 242, 243, 0.05); }
+    .mail button:active { transform: scale(0.96); }
+    .mail button[data-copied] { color: var(--ice); }
+
+    .mail a:focus-visible,
+    .mail button:focus-visible,
+    .socials a:focus-visible,
+    .wordmark:focus-visible {
+      outline: 1px solid var(--ice);
+      outline-offset: 3px;
+    }
+
+    /* Reveal choreography */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(14px);
+      filter: blur(4px);
+      transition:
+        opacity 0.7s var(--ease-out),
+        transform 0.9s var(--spring),
+        filter 0.7s var(--ease-out);
+      transition-delay: var(--delay, 0s);
+    }
+    .is-ready [data-reveal] { opacity: 1; transform: none; filter: none; }
+    .wordmark[data-reveal], .footer[data-reveal] { transform: none; }
+
+    @media (min-width: 640px) {
+      .headline { font-size: 2.25rem; line-height: 1.111; }
+      .note { font-size: 16px; }
+      .wordmark, .corner { top: 28px; }
+      .wordmark { left: 36px; font-size: 26px; }
+      .corner { top: 36px; right: 36px; }
+      .footer { left: 36px; right: 36px; bottom: 24px; }
+    }
+
+    @media (max-width: 420px) {
+      .mail a { padding: 0 12px 0 14px; }
+      .mail button { min-width: 64px; padding: 0 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-reveal] { transition: opacity 0.2s linear; transform: none; filter: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen" id="screen">
+    <div class="grid" aria-hidden="true"></div>
+    <canvas class="field" id="field" aria-hidden="true"></canvas>
+
+    <a class="wordmark" href="./" data-reveal>nklv.dsgn</a>
+    <p class="corner mono" id="corner" aria-hidden="true">0%</p>
+
+    <div class="center" id="focus">
+      <p class="status mono" id="status" aria-hidden="true">0%</p>
+      <h1 class="headline" id="headline" aria-label="Site under construction">welcome to nklv.dsgn</h1>
+
+      <div class="details">
+        <p class="note" data-reveal style="--delay: 0.05s">
+          The new nklv.dsgn is in the works and will be live soon.<br>
+          Questions in the meantime? Write to
+        </p>
+        <div class="mail mono" data-reveal style="--delay: 0.16s">
+          <a href="mailto:nikolaev.design1@gmail.com">nikolaev.design1@gmail.com</a>
+          <button type="button" id="copy" aria-label="Copy email address">copy</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer mono" data-reveal style="--delay: 0.3s">
+      <ul class="socials">
+        <li><a href="https://www.behance.net/oleg_nikolaev1" target="_blank" rel="noreferrer">Behance</a></li>
+        <li><a href="https://www.linkedin.com/in/nikolaevdesign1/" target="_blank" rel="noreferrer">LinkedIn</a></li>
+        <li><a href="https://x.com/oleg_nikolaev1" target="_blank" rel="noreferrer">X(Twitter)</a></li>
+        <li><a href="https://www.instagram.com/nikolaev_design1/" target="_blank" rel="noreferrer">Instagram</a></li>
+      </ul>
+      <span class="copyright">© 2026</span>
+    </footer>
+  </main>
+
+  <script>
+    (() => {
+      const EMAIL = "nikolaev.design1@gmail.com";
+      const WELCOME = "welcome to nklv.dsgn";
+      const HEADLINE = "site under construction";
+      const STATUS = "99% · in development";
+      const DIGITS = "0123456789";
+      const ICE = [184, 212, 255];
+      const FG = [242, 242, 243];
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const screen = document.getElementById("screen");
+      const canvas = document.getElementById("field");
+      const focus = document.getElementById("focus");
+      const headline = document.getElementById("headline");
+      const status = document.getElementById("status");
+      const corner = document.getElementById("corner");
+
+      const smoothstep = (a, b, x) => {
+        const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+        return t * t * (3 - 2 * t);
+      };
+
+      // Characters resolve left to right; unresolved ones flicker as digits.
+      const scramble = (text, step) => {
+        let out = "";
+        for (let i = 0; i < text.length; i += 1) {
+          const ch = text[i];
+          if (ch === " ") { out += " "; continue; }
+          out += step > 2 * i + 4 ? ch : DIGITS[Math.floor(Math.random() * DIGITS.length)];
+        }
+        return out;
+      };
+      const decodeSteps = (text) => 2 * text.length + 6;
+
+      /* ---------- Dot field (ported from the site preloader) ---------- */
+      const field = (() => {
+        const ctx = canvas.getContext("2d", { alpha: true });
+        if (!ctx) return { pulse() {}, measure() {} };
+        ctx.imageSmoothingEnabled = true;
+
+        const sprites = Array.from({ length: 25 }, (_, level) => {
+          const k = smoothstep(0.62 * 24, 24, level);
+          const [r, g, b] = FG.map((c, i) => Math.round(c + (ICE[i] - c) * k));
+          const s = document.createElement("canvas");
+          s.width = 7; s.height = 7;
+          const sc = s.getContext("2d");
+          const img = sc.createImageData(7, 7);
+          for (let y = 0; y < 7; y += 1) {
+            for (let x = 0; x < 7; x += 1) {
+              const dx = x - 3, dy = y - 3;
+              const a = Math.exp(-(dx * dx + dy * dy) / 4.205);
+              const o = (7 * y + x) * 4;
+              img.data[o] = r; img.data[o + 1] = g; img.data[o + 2] = b;
+              img.data[o + 3] = Math.round(255 * a);
+            }
+          }
+          sc.putImageData(img, 0, 0);
+          return s;
+        });
+
+        let w = 0, h = 0, dpr = 1;
+        let xs = new Float32Array(0), ys = new Float32Array(0), weight = new Float32Array(0);
+        let level = new Uint8Array(0), order = new Uint32Array(0);
+        const counts = new Uint32Array(26), cursor = new Uint32Array(26);
+        const ripples = [];
+        let nextRipple = 0, start = 0, raf = 0, center = { x: 0, y: 0 };
+
+        const measure = () => {
+          const box = canvas.getBoundingClientRect();
+          w = box.width; h = box.height;
+          dpr = Math.min(window.devicePixelRatio || 1, 2);
+          canvas.width = Math.max(1, Math.round(w * dpr));
+          canvas.height = Math.max(1, Math.round(h * dpr));
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+          const f = focus.getBoundingClientRect();
+          const cx = f.left + f.width / 2 - box.left;
+          const cy = f.top + f.height / 2 - box.top;
+          const rx = f.width / 2 + 48;
+          const ry = f.height / 2 + 36;
+          const cols = Math.ceil(w / 14), rows = Math.ceil(h / 14);
+          const ox = (w - (cols - 1) * 14) / 2, oy = (h - (rows - 1) * 14) / 2;
+          const n = cols * rows;
+          xs = new Float32Array(n); ys = new Float32Array(n); weight = new Float32Array(n);
+          level = new Uint8Array(n); order = new Uint32Array(n);
+          for (let r = 0; r < rows; r += 1) {
+            for (let c = 0; c < cols; c += 1) {
+              const i = r * cols + c;
+              const x = ox + 14 * c, y = oy + 14 * r;
+              xs[i] = x; ys[i] = y;
+              const nearText = Math.hypot((x - cx) / rx, (y - cy) / ry);
+              const vignette = 1 - smoothstep(0.22, 1.05, Math.hypot((x - 0.5 * w) / (0.5 * w), (y - 0.46 * h) / (0.52 * h)));
+              weight[i] = vignette * (0.72 + 0.28 * smoothstep(0.2, 1.1, nearText));
+            }
+          }
+          center = { x: cx, y: cy };
+        };
+
+        const frame = (now) => {
+          if (!start) start = now;
+          const t = (now - start) / 1000;
+
+          if (!reduced) {
+            while (t >= nextRipple) {
+              ripples.push({ x: Math.random() * w, y: Math.random() * h, born: nextRipple, strength: 0.45 + 0.45 * Math.random() });
+              nextRipple += 0.16 + 0.3 * Math.random();
+            }
+            for (let i = ripples.length - 1; i >= 0; i -= 1) {
+              if (t - ripples[i].born > 2.4) ripples.splice(i, 1);
+            }
+          }
+
+          const rings = ripples.map((r) => {
+            const age = t - r.born;
+            return { x: r.x, y: r.y, radius: 300 * age, gain: r.strength * Math.exp(-1.15 * age) * smoothstep(0, 0.08, age) };
+          });
+
+          counts.fill(0);
+          for (let i = 0; i < xs.length; i += 1) {
+            const x = xs[i], y = ys[i];
+            const wave = Math.sin(0.018 * x - 2.1 * t + 1.6 * Math.sin(0.011 * y + 0.6 * t));
+            const shimmer = Math.sin((0.55 * x + 0.83 * y) * 0.014 + 1.4 * t);
+            const base = 0.5 * wave + 0.5;
+            let ring = 0;
+            for (const r of rings) {
+              const dx = x - r.x, dy = y - r.y;
+              if (Math.abs(dx) > r.radius + 66 || Math.abs(dy) > r.radius + 66) continue;
+              const d = (Math.sqrt(dx * dx + dy * dy) - r.radius) / 22;
+              if (d > -3 && d < 3) ring += r.gain * Math.exp(-d * d);
+            }
+            const cubed = base * base * base;
+            const m = Math.min(1, cubed * cubed * (0.55 + 0.45 * shimmer) * 0.9 + Math.min(1, ring));
+            const v = (0.18 + 0.16 * m) * weight[i];
+            const l = m < 0.42 || v < 0.08 ? 0 : Math.min(24, Math.max(1, Math.round((v / 0.34) * 24)));
+            level[i] = l;
+            counts[l] += 1;
+          }
+
+          // Bucket dots by brightness so globalAlpha changes 24 times per frame, not per dot.
+          let acc = 0;
+          for (let l = 0; l <= 24; l += 1) { const c = counts[l]; counts[l] = acc; acc += c; }
+          counts[25] = acc;
+          cursor.set(counts);
+          for (let i = 0; i < level.length; i += 1) order[cursor[level[i]]++] = i;
+
+          ctx.clearRect(0, 0, w, h);
+          for (let l = 1; l <= 24; l += 1) {
+            if (counts[l] === counts[l + 1]) continue;
+            const sprite = sprites[l];
+            ctx.globalAlpha = (l / 24) * 0.34;
+            for (let k = counts[l]; k < counts[l + 1]; k += 1) {
+              const i = order[k];
+              ctx.drawImage(sprite, xs[i] - 3.5, ys[i] - 3.5);
+            }
+          }
+          ctx.globalAlpha = 1;
+          if (!reduced) raf = requestAnimationFrame(frame);
+        };
+
+        measure();
+        let resizeTimer = 0;
+        const onResize = () => {
+          cancelAnimationFrame(resizeTimer);
+          resizeTimer = requestAnimationFrame(() => { measure(); if (reduced) frame(performance.now()); });
+        };
+        window.addEventListener("resize", onResize);
+        if ("ResizeObserver" in window) new ResizeObserver(onResize).observe(focus);
+
+        const pulse = (strength = 1) => {
+          if (reduced || !start) return;
+          const t = (performance.now() - start) / 1000;
+          ripples.push({ x: center.x, y: center.y, born: t, strength });
+        };
+
+        requestAnimationFrame((now) => {
+          start = now;
+          if (!reduced) {
+            ripples.push({ x: center.x, y: center.y, born: 0, strength: 1 });
+            nextRipple = 0.25;
+          }
+          frame(now);
+        });
+
+        return { pulse, measure };
+      })();
+
+      /* ---------- Text sequence ---------- */
+      const setPercent = (p) => {
+        status.textContent = `${p}%`;
+        corner.textContent = `${p}%`;
+      };
+
+      const decode = (el, text, done) => {
+        if (reduced) { el.textContent = text; done && done(); return; }
+        const t0 = performance.now();
+        const total = decodeSteps(text);
+        const tick = () => {
+          const step = Math.floor((performance.now() - t0) / 18);
+          el.textContent = step >= total ? text : scramble(text, step);
+          if (step >= total) { done && done(); return; }
+          setTimeout(tick, 40);
+        };
+        tick();
+      };
+
+      const finish = () => {
+        decode(headline, HEADLINE, () => {
+          screen.classList.add("is-ready");
+          decode(status, STATUS);
+        });
+        field.pulse(1);
+      };
+
+      if (reduced) {
+        setPercent(99);
+        headline.textContent = HEADLINE;
+        status.textContent = STATUS;
+        screen.classList.add("is-ready");
+      } else {
+        decode(headline, WELCOME);
+        const LOAD_MS = 2400;
+        const t0 = performance.now();
+        const easeOut = (x) => 1 - Math.pow(1 - x, 3);
+        const tick = () => {
+          const k = Math.min(1, (performance.now() - t0) / LOAD_MS);
+          setPercent(Math.round(99 * easeOut(k)));
+          if (k < 1) { setTimeout(tick, 40); return; }
+          setTimeout(finish, 650);
+        };
+        tick();
+      }
+
+      /* ---------- Copy email ---------- */
+      const copyBtn = document.getElementById("copy");
+      let copyTimer = 0;
+      copyBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(EMAIL);
+        } catch {
+          const tmp = document.createElement("textarea");
+          tmp.value = EMAIL;
+          tmp.setAttribute("readonly", "");
+          tmp.style.position = "fixed";
+          tmp.style.opacity = "0";
+          document.body.appendChild(tmp);
+          tmp.select();
+          document.execCommand("copy");
+          tmp.remove();
+        }
+        copyBtn.textContent = "copied";
+        copyBtn.setAttribute("data-copied", "");
+        clearTimeout(copyTimer);
+        copyTimer = setTimeout(() => {
+          copyBtn.textContent = "copy";
+          copyBtn.removeAttribute("data-copied");
+        }, 1600);
+      });
+    })();
+  </script>
+</body>
+</html>
